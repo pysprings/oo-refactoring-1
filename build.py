@@ -4,22 +4,26 @@ import markdown
 
 def main():
     for path in paths():
-        write_compiled(path)
+        Page(path).write_compiled()
 
 def paths():
     return glob.glob('*.markdown')
 
-def read(path):
-    return open(path).read()
+class Page:
+    def __init__(self, path):
+        self.path = path
 
-def compile(path):
-    return markdown.markdown(read(path))
+    def read(self):
+        return open(self.path).read()
 
-def new_path(path):
-    return path.replace('.markdown', '.html')
+    def compile(self):
+        return markdown.markdown(self.read())
 
-def write_compiled(path):
-    open(new_path(path), 'w').write(compile(path))
+    def new_path(self):
+        return self.path.replace('.markdown', '.html')
+
+    def write_compiled(self):
+        open(self.new_path(), 'w').write(self.compile())
 
 
 if __name__ == '__main__':
